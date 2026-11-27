@@ -35,13 +35,20 @@ export default {
     walkDuration: 5000,                    // ms of walking before the race starts
     walkSpeed: 30,
     startX: 100,                           // where runners start
-    obstacleCount: 6,
-    obstacleSpeed: { min: 50, max: 150 },
-    hitDepth: 25,                          // how close in depth to count as a hit
     jumpHeight: 40,                        // multiplied by sprite scale
     boostAmount: 100,                      // extra speed after a good jump
     boostDuration: 1000,
     fallSlideSpeed: 150                    // used when scrolling is OFF
+  },
+
+  // The single long hurdle across the track
+  hurdle: {
+    pieces: 12,                         // pieces stacked from back to front of the track
+    startX: 0.75,                       // starting position (fraction of screen width)
+    speed: 100,                         // how fast it moves left
+    jumpRange: 20,                      // how close a runner gets before jumping (x sprite scale)
+    respawnGap: { min: 200, max: 1200 },// extra distance off-screen before it comes round again
+    offscreenMargin: 200                // how far past the left edge before it resets
   },
 
   // Scrolling background option

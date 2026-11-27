@@ -1,6 +1,6 @@
 import config from '../config.js';
 import Runner from '../objects/Runner.js';
-import Obstacle from '../objects/Obstacle.js';
+import Hurdle from '../objects/Hurdle.js';
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -36,22 +36,8 @@ export default class GameScene extends Phaser.Scene {
       runner.walk();   // after adding: adding to a group resets velocity
     });
 
-    // Obstacles at random spots on the track
-    this.obstacles = this.physics.add.group();
-
-    for (let i = 0; i < config.race.obstacleCount; i++) {
-      const x = Phaser.Math.Between(width * 0.5, width);
-      const y = Phaser.Math.Between(this.track.top, this.track.bottom);
-      this.obstacles.add(new Obstacle(this, x, y));
-    }
-
-    // Hits: only when runner and obstacle are at about the same depth
-    this.physics.add.overlap(
-      this.runners,
-      this.obstacles,
-      (runner) => runner.hitObstacle(),
-      (runner, obstacle) => Math.abs(runner.groundY - obstacle.groundY) < config.race.hitDepth
-    );
+    // One long hurdle across the whole track
+    this.hurdle = new Hurdle(this);
 
     this.time.delayedCall(config.race.walkDuration, this.startRace, [], this);
   }
@@ -70,7 +56,7 @@ export default class GameScene extends Phaser.Scene {
     this.racing = true;   // set first, so speeds below include scrolling
 
     this.runners.getChildren().forEach(runner => runner.run());
-    this.obstacles.getChildren().forEach(obstacle => obstacle.move());
+    this.hurdle.start();
 
     // Every second, runners tire / gain ground / drift
     this.time.addEvent({
@@ -81,6 +67,18 @@ export default class GameScene extends Phaser.Scene {
   }
 
   update(time, delta) {
+    this.hurdle.update(delta);
+
+    // Each runner gets one go at each pass of the hurdle
+    this.runners.getChildren().forEach(runner => {
+      if (runner.lastHurdlePass === this.hurdle.pass) return;
+
+      if (this.hurdle.isAhead(runner)) {
+        runner.lastHurdlePass = this.hurdle.pass;
+        runner.hitObstacle();   // falls, jumps or good-jumps based on agility
+      }
+    });
+
     if (!this.isScrolling()) return;
 
     const dt = delta / 1000;
