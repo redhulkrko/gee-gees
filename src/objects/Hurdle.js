@@ -1,27 +1,28 @@
 import config from '../config.js';
-import { applyPerspective } from '../utils/perspective.js';
 
-// One long hurdle across the whole track, from the back edge to the front.
-// It's built from a column of pieces so each piece gets the right size and
-// draw order for its depth: runners at the back are hidden behind it,
-// runners at the front are drawn in front of it.
+// One long hurdle image across the whole track.
+// It's anchored at its bottom-middle, sitting on the front edge of the track,
+// so draw your image tall enough to reach back to the far edge.
 export default class Hurdle {
   constructor(scene) {
     this.scene = scene;
-    this.x = scene.scale.width * config.hurdle.startX;
     this.pass = 0;          // goes up by 1 each time the hurdle comes round again
     this.moving = false;
-    this.pieces = [];
 
-    const { top, bottom } = scene.track;
-    const count = config.hurdle.pieces;
+    this.image = scene.add.image(
+      scene.scale.width * config.hurdle.startX,
+      scene.track.bottom,
+      'obstacle'
+    );
+    this.image.setOrigin(0.5, 1);
+    this.image.setScale(config.hurdle.scale);
 
-    for (let i = 0; i < count; i++) {
-      const groundY = Phaser.Math.Linear(top, bottom, i / (count - 1));
-      const piece = scene.add.image(this.x, groundY, 'obstacle').setOrigin(0.5, 1);
-      piece.groundY = groundY;
-      this.pieces.push(piece);
-    }
+    // Drawn above the track but behind every runner
+    this.image.setDepth(0);
+  }
+
+  get x() {
+    return this.image.x;
   }
 
   start() {
@@ -42,19 +43,14 @@ export default class Hurdle {
   // Called every frame by GameScene
   update(delta) {
     if (this.moving) {
-      this.x -= this.getSpeed() * (delta / 1000);
+      this.image.x -= this.getSpeed() * (delta / 1000);
     }
 
     // Gone off the left edge: bring it back in from the right after a gap
-    if (this.x < -config.hurdle.offscreenMargin) {
+    if (this.image.x < -this.image.displayWidth) {
       const { min, max } = config.hurdle.respawnGap;
-      this.x = this.scene.scale.width + Phaser.Math.Between(min, max);
+      this.image.x = this.scene.scale.width + this.image.displayWidth + Phaser.Math.Between(min, max);
       this.pass++;
     }
-
-    this.pieces.forEach(piece => {
-      piece.x = this.x;
-      applyPerspective(piece, this.scene.track);
-    });
   }
 }

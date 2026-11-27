@@ -41,14 +41,13 @@ export default {
     fallSlideSpeed: 150                    // used when scrolling is OFF
   },
 
-  // The single long hurdle across the track
+  // The single long hurdle across the track (one image: assets/obstacle.png)
   hurdle: {
-    pieces: 12,                         // pieces stacked from back to front of the track
+    scale: 1,                           // 1 = image's own size; draw it to fit the track
     startX: 0.75,                       // starting position (fraction of screen width)
     speed: 100,                         // how fast it moves left
     jumpRange: 20,                      // how close a runner gets before jumping (x sprite scale)
-    respawnGap: { min: 200, max: 1200 },// extra distance off-screen before it comes round again
-    offscreenMargin: 200                // how far past the left edge before it resets
+    respawnGap: { min: 200, max: 1200 } // extra distance off-screen before it comes round again
   },
 
   // Scrolling background option
