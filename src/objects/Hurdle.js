@@ -1,6 +1,6 @@
 import config from '../config.js';
 
-// One long hurdle image across the whole track.
+// The hedge jump: one image across the whole track.
 // It's anchored at its bottom-middle, sitting on the front edge of the track,
 // so draw your image tall enough to reach back to the far edge.
 export default class Hurdle {
@@ -12,7 +12,7 @@ export default class Hurdle {
     this.image = scene.add.image(
       scene.scale.width * config.hurdle.startX,
       scene.track.bottom,
-      'obstacle'
+      'hedgeJump'
     );
     this.image.setOrigin(0.5, 1);
     this.image.setScale(config.hurdle.scale);

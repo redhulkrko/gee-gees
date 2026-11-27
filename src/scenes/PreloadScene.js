@@ -18,7 +18,7 @@ export default class PreloadScene extends Phaser.Scene {
     // Scenery and objects
     this.load.image('background', 'assets/background.png');
     this.load.image('track', 'assets/track.png');
-    this.load.image('obstacle', 'assets/obstacle.png');
+    this.load.image('hedgeJump', 'assets/hedge-jump.png');
 
     // Player stats
     this.load.json('players', 'assets/data/players.json');
