@@ -41,9 +41,9 @@ export default {
     fallSlideSpeed: 150                    // used when scrolling is OFF
   },
 
-  // The single long hurdle across the track (one image: assets/obstacle.png)
+  // The single long hurdle across the track (one image: assets/hedge-jump.png)
   hurdle: {
-    scale: 1,                           // 1 = image's own size; draw it to fit the track
+    scale: 0.83,                        // sized so the back panel sits on the far edge of the track
     startX: 0.75,                       // starting position (fraction of screen width)
     speed: 100,                         // how fast it moves left
     jumpRange: 20,                      // how close a runner gets before jumping (x sprite scale)
