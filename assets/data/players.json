@@ -1,0 +1,6 @@
+[
+  { "name": "Red",    "sprite": "enemy1", "speed": 150, "stamina": 0.9, "agility": 0.6 },
+  { "name": "Blue",   "sprite": "enemy2", "speed": 180, "stamina": 0.5, "agility": 0.8 },
+  { "name": "Green",  "sprite": "enemy3", "speed": 120, "stamina": 0.7, "agility": 0.9 },
+  { "name": "Yellow", "sprite": "enemy1", "speed": 200, "stamina": 0.3, "agility": 0.4 }
+]
